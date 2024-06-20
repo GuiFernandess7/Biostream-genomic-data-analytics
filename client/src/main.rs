@@ -28,13 +28,13 @@ async fn main() {
         println!("* {}: {:?}", header, value);
     }
 
-    if let Err(e) = socket.send(Message::Text("Hello WebSocket".into())).await {
-        eprintln!("Error sending message: {}", e);
-        return;
-    }
+    //if let Err(e) = socket.send(Message::Text("Hello WebSocket".into())).await {
+    //    eprintln!("Error sending message: {}", e);
+    //    return;
+    //}
 
     println!("Sending file content...");
-    let chunk_size = 15 * 1024; // Define the size of each chunk (15KB in this case)
+    let chunk_size = 30 * 1024; // Define the size of each chunk (15KB in this case)
     let mut file = match get_file_as_byte_vec(filepath) {
         Ok(file) => file,
         Err(error) => {
