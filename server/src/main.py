@@ -3,9 +3,17 @@ import tornado.websocket
 import tornado.ioloop
 import aiofiles
 import asyncio
-import time
+import pika
+import json
 
 buffer = []
+
+# Conexão com RabbitMQ
+connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+channel = connection.channel()
+
+# Declaração de fila
+channel.queue_declare(queue='data-stream')
 
 class WebSocketServer(tornado.websocket.WebSocketHandler):
     """Simple WebSocket handler to serve clients."""
@@ -22,15 +30,21 @@ class WebSocketServer(tornado.websocket.WebSocketHandler):
 
     async def on_message(self, message):
         await self.write_to_file(message)
+        await self.send_to_rabbitmq(message)
 
     async def write_to_file(self, message):
         if isinstance(message, bytes):
             message = message.decode('utf-8')
 
         async with aiofiles.open("log.txt", mode='a', encoding='utf-8') as f:
-            # Add a delimiter for new sequences if the message is a header
             print(f"Message received: {message}")
-            await f.write(message)
+            await f.write(message + '\n')
+
+    async def send_to_rabbitmq(self, message):
+        if isinstance(message, bytes):
+            message = message.decode('utf-8')
+        channel.basic_publish(exchange='', routing_key='data-stream', body=message)
+        print(f"Message sent to RabbitMQ: {message}")
 
     def on_ping(self, data):
         print("Ping received")
@@ -45,14 +59,12 @@ class WebSocketServer(tornado.websocket.WebSocketHandler):
         for client in cls.clients:
             await client.write_message(message)
 
-
 class ProcessChannel:
     def __init__(self):
         self.p = 0.72
 
     def sample(self):
         return "Listening..."
-
 
 def main():
     app = tornado.web.Application(
@@ -71,7 +83,6 @@ def main():
     periodic_callback.start()
 
     io_loop.start()
-
 
 if __name__ == "__main__":
     main()
