@@ -11,7 +11,7 @@ use tokio::time::{timeout, Duration};
 async fn main() {
     env_logger::init();
 
-    let filepath = "/home/guilhermefs/workspace/dev/projects/BioStream/client/data/ncbi_dataset/data/GCF_025399875.1/GCF_025399875.1_Caltech_Dcor_3.1_genomic.fna";
+    let filepath = "./data/ncbi_dataset/data/GCF_025399875.1/GCF_025399875.1_Caltech_Dcor_3.1_genomic.fna";
 
     let (mut socket, response) = match connect_async("ws://localhost:8888/websocket/").await {
         Ok((s, r)) => (s, r),
