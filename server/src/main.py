@@ -8,11 +8,9 @@ import json
 
 buffer = []
 
-# Conexão com RabbitMQ
 connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
 channel = connection.channel()
 
-# Declaração de fila
 channel.queue_declare(queue='data-stream')
 
 class WebSocketServer(tornado.websocket.WebSocketHandler):
