@@ -34,7 +34,9 @@ class WebSocketServer(tornado.websocket.WebSocketHandler):
         if isinstance(message, bytes):
             message = message.decode('utf-8')
 
-        async with aiofiles.open("log.txt", mode='a', encoding='utf-8') as f:
+        async with aiofiles.open("data.txt", mode='a', encoding='utf-8') as f:
+            if message.startswith(">"):
+                await f.write("------------- \n")
             print(f"Message received: {message}")
             await f.write(message + '\n')
 
