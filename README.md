@@ -11,6 +11,8 @@ Data report files are in JSON Lines format.
 
 https://www.ncbi.nlm.nih.gov/datasets
 
+---
+
 ### Data used:
 
 Organism Scientific Name: Dalotia coriaria
