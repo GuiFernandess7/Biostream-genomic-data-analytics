@@ -29,7 +29,7 @@ async fn main() {
     }
 
     println!("Sending file content...");
-    let chunk_size = 5 * 1024;
+    let chunk_size = 2 * 1024;
     let mut file = match get_file_as_byte_vec(filepath) {
         Ok(file) => file,
         Err(error) => {
@@ -58,7 +58,7 @@ async fn main() {
                 break;
             }
         }
-        tokio::time::sleep(Duration::from_millis(5_000)).await;
+        tokio::time::sleep(Duration::from_millis(500)).await;
     }
 
     println!("File sent successfully.");
