@@ -6,8 +6,15 @@ from time import sleep
 import plotly.graph_objects as go
 from collections import Counter
 
-st.title('Near real time genetic data streaming')
+st.title('📊 🧬 Near Real-time genetic data streaming')
 st.write('Waiting for messages...')
+
+colors = {
+    'A': 'red',
+    'T': 'blue',
+    'C': 'green',
+    'G': 'orange'
+}
 
 async def consume_messages():
     connection = await aio_pika.connect_robust("amqp://guest:guest@localhost/")
@@ -30,7 +37,11 @@ async def show_data():
     all_sequences = ''.join(seq for seq in st.session_state.sequences if not seq.startswith(">"))
     nucleotide_counts = Counter(all_sequences)
     fig = go.Figure()
-    fig.add_trace(go.Bar(x=list(nucleotide_counts.keys()), y=list(nucleotide_counts.values())))
+
+    for nucleotide, count in nucleotide_counts.items():
+        fig.add_trace(go.Bar(x=[nucleotide], y=[count], marker_color=colors.get(nucleotide, 'gray')))
+
+    #fig.add_trace(go.Bar(x=list(nucleotide_counts.keys()), y=list(nucleotide_counts.values())))
 
     fig.update_layout(
         title='Nucleotide Distribution',
@@ -41,7 +52,7 @@ async def show_data():
 
     with empty.container():
         st.plotly_chart(fig, use_container_width=True)
-    await asyncio.sleep(1)
+    await asyncio.sleep(0.5)
 
 def main():
     asyncio.run(consume_messages())
