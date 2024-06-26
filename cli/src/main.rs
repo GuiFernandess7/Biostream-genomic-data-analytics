@@ -13,7 +13,7 @@ async fn main() {
 
     let filepath = "./data/ncbi_dataset/data/GCF_025399875.1/GCF_025399875.1_Caltech_Dcor_3.1_genomic.fna";
 
-    let (mut socket, response) = match connect_async("ws://localhost:8888/websocket/").await {
+    let (mut socket, response) = match connect_async("ws://localhost:8888/websocket").await {
         Ok((s, r)) => (s, r),
         Err(e) => {
             eprintln!("Error connecting to server: {}", e);
