@@ -27,7 +27,7 @@ class WebSocketServer(tornado.websocket.WebSocketHandler):
         print(f"Client disconnected: {self}")
 
     async def on_message(self, message):
-        await self.write_to_file(message)
+        #await self.write_to_file(message)
         await self.send_to_rabbitmq(message)
 
     async def write_to_file(self, message):
