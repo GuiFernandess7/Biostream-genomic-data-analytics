@@ -29,7 +29,7 @@ async fn main() {
     }
 
     println!("Sending file content...");
-    let chunk_size = 30 * 1024; // Define the size of each chunk (15KB in this case)
+    let chunk_size = 5 * 1024;
     let mut file = match get_file_as_byte_vec(filepath) {
         Ok(file) => file,
         Err(error) => {
@@ -45,7 +45,7 @@ async fn main() {
             file.drain(..).collect()
         };
 
-        let send_result = timeout(Duration::from_secs(10), socket.send(Message::Binary(chunk))).await;
+        let send_result = timeout(Duration::from_secs(30), socket.send(Message::Binary(chunk))).await;
 
         match send_result {
             Ok(Ok(())) => println!("Chunk sent successfully"),
@@ -58,7 +58,7 @@ async fn main() {
                 break;
             }
         }
-        tokio::time::sleep(Duration::from_millis(50)).await;
+        tokio::time::sleep(Duration::from_millis(5_000)).await;
     }
 
     println!("File sent successfully.");
