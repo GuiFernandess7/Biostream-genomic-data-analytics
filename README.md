@@ -18,3 +18,10 @@ https://www.ncbi.nlm.nih.gov/datasets
 Organism Scientific Name: Dalotia coriaria
 https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=866043
 
+---
+
+### Preview (Nucleotide Distribution | Near Real Time)
+
+https://github.com/GuiFernandess7/biostream-genetic-data-analytics/assets/63022500/d6905ea4-9200-42b8-99f6-323f8f46d9b5
+
+
