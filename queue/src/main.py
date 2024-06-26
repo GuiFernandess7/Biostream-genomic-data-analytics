@@ -1,16 +1,39 @@
-import pika
+"""Not Implemented"""
 
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-channel = connection.channel()
+import asyncio
+import aio_pika
 
-channel.queue_declare(queue='data-stream')
+async def consume_messages():
+    seqs = {}
+    current_seq_id = None
+    current_sequence = []
 
-def callback(ch, method, properties, body):
-    message = body.decode('utf-8')
-    print(f"Received: {message} \n")
-    print("\n")
+    connection = await aio_pika.connect_robust("amqp://guest:guest@localhost/")
+    channel = await connection.channel()
 
-channel.basic_consume(queue='data-stream', on_message_callback=callback, auto_ack=True)
+    queue = await channel.declare_queue("data-stream")
 
-print('Waiting for messages. To exit press CTRL+C')
-channel.start_consuming()
+    async with queue.iterator() as queue_iter:
+        async for message in queue_iter:
+            async with message.process():
+                line = message.body.decode('utf-8')
+
+                if line.startswith(">"):
+                    if current_seq_id is not None:
+                        seqs[current_seq_id] = "".join(current_sequence)
+                    current_seq_id = line.strip()
+                    current_sequence = []
+                else:
+                    current_sequence.append(line.strip())
+
+        if current_seq_id is not None:
+            seqs[current_seq_id] = "".join(current_sequence)
+
+    print(seqs)
+    await connection.close()
+
+def main():
+    asyncio.run(consume_messages())
+
+if __name__ == '__main__':
+    main()
