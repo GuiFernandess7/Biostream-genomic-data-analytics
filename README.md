@@ -1,6 +1,6 @@
-<img width="832" alt="biostream-logo" src="https://github.com/GuiFernandess7/biostream-genetic-data-analytics/assets/63022500/b5514e61-e8ae-4b72-878a-b1fc33839412">
-
 ## 📊 🧬 Real-time genetic data streaming
+
+<img width="832" alt="biostream-logo" src="https://github.com/GuiFernandess7/biostream-genetic-data-analytics/assets/63022500/b5514e61-e8ae-4b72-878a-b1fc33839412">
 
 Data processing, streaming and analytics (ETL) software for genetic data, including nucleotide genome sequences
 
