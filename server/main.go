@@ -42,7 +42,6 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		// Process message (write to file, send to RabbitMQ, etc.)
 		go writeToRabbitMQ(string(message))
 	}
 }
@@ -63,12 +62,12 @@ func writeToRabbitMQ(message string) {
 	defer ch.Close()
 
 	q, err := ch.QueueDeclare(
-		queue, // name
-		false, // durable
-		false, // delete when unused
-		false, // exclusive
-		false, // no-wait
-		nil,   // arguments
+		queue,
+		false,
+		false,
+		false,
+		false,
+		nil,
 	)
 	if err != nil {
 		log.Println(err)
@@ -76,10 +75,10 @@ func writeToRabbitMQ(message string) {
 	}
 
 	err = ch.Publish(
-		"",     // exchange
-		q.Name, // routing key
-		false,  // mandatory
-		false,  // immediate
+		"",
+		q.Name,
+		false,
+		false,
 		amqp.Publishing{
 			ContentType: "text/plain",
 			Body:        []byte(message),
@@ -108,12 +107,12 @@ func consumeMessages() {
 	defer ch.Close()
 
 	q, err := ch.QueueDeclare(
-		queue, // name
-		false, // durable
-		false, // delete when unused
-		false, // exclusive
-		false, // no-wait
-		nil,   // arguments
+		queue,
+		false,
+		false,
+		false,
+		false,
+		nil,
 	)
 	if err != nil {
 		log.Println(err)
@@ -121,13 +120,13 @@ func consumeMessages() {
 	}
 
 	msgs, err := ch.Consume(
-		q.Name, // queue
-		"",     // consumer
-		true,   // auto-ack
-		false,  // exclusive
-		false,  // no-local
-		false,  // no-wait
-		nil,    // args
+		q.Name,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,  
 	)
 	if err != nil {
 		log.Println(err)
