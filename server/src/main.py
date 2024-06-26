@@ -1,4 +1,6 @@
-import tornado.web
+"""Not implemented"""
+
+""" import tornado.web
 import tornado.websocket
 import tornado.ioloop
 import aiofiles
@@ -14,7 +16,7 @@ channel = connection.channel()
 channel.queue_declare(queue='data-stream')
 
 class WebSocketServer(tornado.websocket.WebSocketHandler):
-    """Simple WebSocket handler to serve clients."""
+    "Simple WebSocket handler to serve clients."
 
     clients = set()
 
@@ -87,3 +89,4 @@ def main():
 if __name__ == "__main__":
     main()
     print(buffer)
+ """
