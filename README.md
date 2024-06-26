@@ -1,4 +1,4 @@
-<img width="532" alt="biostream-logo" src="https://github.com/GuiFernandess7/biostream-genetic-data-analytics/assets/63022500/b5514e61-e8ae-4b72-878a-b1fc33839412">
+<img width="832" alt="biostream-logo" src="https://github.com/GuiFernandess7/biostream-genetic-data-analytics/assets/63022500/b5514e61-e8ae-4b72-878a-b1fc33839412">
 
 ## 📊 🧬 Real-time genetic data streaming
 
