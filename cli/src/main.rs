@@ -20,7 +20,7 @@ async fn main() {
         println!(".env file loaded successfully");
     }
 
-    let filepath = env::var("FASTA_FILE_PATH").expect("FILE_PATH not set in .env file");
+    let filepath = env::var("FASTA_FILE_PATH3").expect("FILE_PATH not set in .env file");
 
     let (mut socket, response) = match connect_async("ws://localhost:8888/websocket").await {
         Ok((s, r)) => (s, r),
