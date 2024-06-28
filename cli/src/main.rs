@@ -6,12 +6,21 @@ use std::fs::OpenOptions;
 use std::io::{self, Error, Read};
 use std::path::Path;
 use tokio::time::{timeout, Duration};
+use dotenv::dotenv;
+use std::env;
+use env_logger;
 
 #[tokio::main]
 async fn main() {
     env_logger::init();
 
-    let filepath = "./data/ncbi_dataset/data/GCF_025399875.1/GCF_025399875.1_Caltech_Dcor_3.1_genomic.fna";
+    if let Err(err) = dotenv() {
+        eprintln!("Error loading .env file: {}", err);
+    } else {
+        println!(".env file loaded successfully");
+    }
+
+    let filepath = env::var("FASTA_FILE_PATH").expect("FILE_PATH not set in .env file");
 
     let (mut socket, response) = match connect_async("ws://localhost:8888/websocket").await {
         Ok((s, r)) => (s, r),
@@ -30,7 +39,7 @@ async fn main() {
 
     println!("Sending file content...");
     let chunk_size = 2 * 1024;
-    let mut file = match get_file_as_byte_vec(filepath) {
+    let mut file = match get_file_as_byte_vec(filepath.as_str()) {
         Ok(file) => file,
         Err(error) => {
             eprintln!("Error reading file: {}", error);
