@@ -2,3 +2,4 @@
 
 cli/data/*
 target
+.env
