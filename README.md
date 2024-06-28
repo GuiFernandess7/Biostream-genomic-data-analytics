@@ -26,7 +26,7 @@ https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=866043
 
 * **Nucleotide Distribution | Near Real Time**
 
-https://github.com/GuiFernandess7/biostream-genetic-data-analytics/assets/63022500/d6905ea4-9200-42b8-99f6-323f8f46d9b5
+https://github.com/GuiFernandess7/biostream-genomic-data-analytics/assets/63022500/cda27c2f-0dcd-4042-8aac-41acfcd29d6d
 
 ---
 
