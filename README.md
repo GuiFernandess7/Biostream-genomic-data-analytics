@@ -38,3 +38,9 @@ https://github.com/GuiFernandess7/biostream-genetic-data-analytics/assets/630225
 * RabbitMQ
 * Streamlit
 * Plotly
+
+--- 
+
+### Architeture:
+
+![arch-biostream](https://github.com/GuiFernandess7/biostream-genetic-data-analytics/assets/63022500/00420f32-83f5-4594-87be-07ca826a6798)
