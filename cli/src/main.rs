@@ -38,7 +38,7 @@ async fn main() {
     }
 
     println!("Sending file content...");
-    let chunk_size = 2 * 1024;
+    let chunk_size = 5 * 1024;
     let mut file = match get_file_as_byte_vec(filepath.as_str()) {
         Ok(file) => file,
         Err(error) => {
