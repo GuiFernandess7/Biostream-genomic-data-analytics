@@ -1,11 +1,8 @@
 import streamlit as st
-from Bio import SeqIO
 import asyncio
 import aio_pika
 import plotly.graph_objects as go
 from collections import Counter
-from Bio import Align
-from Bio.Seq import Seq
 import traceback
 import re
 
@@ -23,8 +20,10 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+if "bases" not in st.session_state:
+    st.session_state.bases = []
 if "sequences" not in st.session_state:
-        st.session_state.sequences = []
+    st.session_state.sequences = []
 
 colors = {
     'A': 'red',
@@ -49,6 +48,7 @@ def validate_queue_name(name: str):
     else:
         return False
 
+
 async def consume_messages(address: str, queue_name: str):
     connection = await aio_pika.connect_robust(address)
     try:
@@ -63,11 +63,7 @@ async def consume_messages(address: str, queue_name: str):
             async for message in queue_iter:
                 async with message.process():
                     body = message.body.decode('utf-8')
-
-                    if body.startswith(">"):
-                        st.session_state.sequences.append(body)
-                    else:
-                        st.session_state.sequences.extend(body)
+                    st.session_state.bases.extend(body)
 
     except aio_pika.exceptions.AMQPError as e:
         st.error(f"Error: {e}")
@@ -83,8 +79,8 @@ async def consume_messages(address: str, queue_name: str):
 
 async def show_nucleotide_distribution(graph):
     while True:
-        if "sequences" in st.session_state and st.session_state.sequences:
-            all_sequences = ''.join(seq for seq in st.session_state.sequences if not seq.startswith(">"))
+        if "sequences" in st.session_state and st.session_state.bases:
+            all_sequences = ''.join(seq for seq in st.session_state.bases if not seq.startswith(">"))
 
             nucleotide_counts = Counter(all_sequences)
             fig_nucleotides = go.Figure()
@@ -104,8 +100,8 @@ async def show_nucleotide_distribution(graph):
 
 async def dimer_distribution(graph):
     while True:
-        if "sequences" in st.session_state and st.session_state.sequences:
-            all_sequences = ''.join(seq for seq in st.session_state.sequences if not seq.startswith(">"))
+        if "sequences" in st.session_state and st.session_state.bases:
+            all_sequences = ''.join(seq for seq in st.session_state.bases if not seq.startswith(">"))
 
             dimers = [all_sequences[i:i+2] for i in range(len(all_sequences)-1)]
             dimer_counts = Counter(dimers)
@@ -173,3 +169,19 @@ if __name__ == '__main__':
                 pass
             finally:
                 loop.close()
+
+""" sequences = body.split('>')
+
+                    if len(sequences) > 1:
+                        if st.session_state.sequences:
+                            st.session_state.sequences[-1] += sequences[0]
+                        else:
+                            st.session_state.sequences.append(sequences[0])
+
+                        st.session_state.sequences.extend(sequences[1:-1])
+                        st.session_state.sequences.append(sequences[-1])
+                    else:
+                        if st.session_state.sequences:
+                            st.session_state.sequences[-1] += sequences[0]
+                        else:
+                            st.session_state.sequences.append(sequences[0]) """
